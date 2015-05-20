@@ -1,0 +1,19 @@
+citHeader("To cite package 'rlandscape' in publications use:")
+     
+     year <- sub(".*(2[[:digit:]]{3})-.*", "\\1", meta$Date, perl = TRUE)
+     vers <- paste("R package version", meta$Version)
+     
+     citEntry(entry="Manual",
+              title = "rlandscape: Random Landscape Generation for Harvest Scheduling Models",
+              author = personList(as.person("Gregor Passolt"),
+                                  as.person("Miranda J. Fix"),
+                                  as.person("Sandor F. Toth")),
+              year = 2012,
+              note = 1.0,
+     
+              textVersion =
+              paste("Gregor Passolt, Miranda J. Fix, and Sandor F. Toth, ",
+                    "(",
+                    year,
+                    "). ", title, ", ",
+                    vers, ".", sep=""))

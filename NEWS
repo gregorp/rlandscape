@@ -1,0 +1,3 @@
+New in Version 1.1
+
+* Eliminated use of "subset" and "with" so passes package checks without notes.

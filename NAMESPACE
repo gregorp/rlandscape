@@ -1,0 +1,8 @@
+S3method(plot,landscape)
+export(rland)
+export(rland.gui)
+export(rlandscape)
+import(deldir)
+import(gWidgets)
+import(gWidgetsRGtk2)
+importFrom(spatstat,rSSI)

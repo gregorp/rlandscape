@@ -1,0 +1,159 @@
+\documentclass{article}
+%\VignettePackage{rlandscape}
+%\VignetteDepends{rlandscape}
+%\VignetteIndexEntry{rlandscape tutorial}
+\usepackage[margin=1.0in]{geometry}
+\author{Gregor Passolt}
+\title{Generating landscapes with the \code{rlandsacpe} package}
+\date{\today}
+\newcommand{\code}[1]{{\tt #1}}
+
+\begin{document}
+
+\maketitle
+\tableofcontents
+
+The \code{rlandscape} package is intended to make it easy to simulate random landscapes
+for testing harvest scheduling models.
+This vignette will cover use of the two primary functions,
+\code{rlandscape} and \code{rland}, and is aimed at users that are new to R.
+Most users will probably find \code{rland} the more useful,
+but should have a basic understanding of what \code{rlandscape} does so they know what they're getting.
+To learn about how \code{rlandcsape} works, please refer to
+Gregor Passolt, Miranda J. Fix, and Sandor F. Toth (in review).
+A Voronoi Tessellation-based Approach to Generate Hypothetical Forest Landscapes,
+Canadian Journal of Forest Research.
+
+\section{Generating a single landscape with \code{rlandscape}}
+
+The foundation of the package is \code{rlandscape}, which generates a single landscape at a time.
+Its output (a landscape object) can be assigned to a variable for analysis or saving.
+The first step is to download the \code{rlandscape} package.
+If you're reading this vignette, that's probably already done, but just in case the command is
+\verb|install.packages("rlandscape")|.
+Other dependencies will be installed automatically, which may take a minute.
+This only needs to be performed once.
+Every time you start a new R session, you will need to load the package, which can be done
+either with the \verb|require| or \verb|library| commands.
+
+<<quiet = TRUE, message = FALSE>>=
+library(rlandscape) ## loading the package
+@
+
+Now that the package is loaded, all the associated functions are available.
+Let's get started creating a landscape
+
+<<rlandscape1, fig.width = 3.5, fig.height= 3.5>>=
+myLand <- rlandscape()
+plot(myLand)
+myLand$stats
+@
+
+Particular features of this landscape can be extracted using the \verb|$| operator.
+The \code{stats} display the final number of
+polygons (nOut), the mean of the degree distribution (degMean),
+the standard deviation of the degree distribution (degSD),
+the coefficient of variation of the area distribution (areaCV),
+the horizontal:vertical aspect ratio (hAsp),
+the number of points placed by each of the 4 point placement methods (uniform, lattice, cluster,
+inhibition, respectively),
+the proportion of edges deleted to merge two polygons together (pMerge),
+and the proportion of polygons deleted to become holes (pHole).
+The adjacency table is available as \code{adj}, and the areas are in the \code{dir.area} column
+of a summary table that includes information for all of original points, such as their x-y
+coordinates, whether they were deleted, and whether they were merged with another polygon.
+Note that, due to the deletions and merge events, the polygon numbering will not be sequential.
+For example, if polygon 2 is deleted, another polygon will not be renamed ``2''.
+
+<<rlandscape2>>=
+head(myLand$adj)
+head(myLand$summary)
+@
+
+
+You can give arguments to \code{rlandcsape} to alter the landscape under construction.
+For example, a landscape of 500 polygons, with a 2:1 aspect ratio and a very patchy composition
+would be given by:
+
+<<>>=
+land2 <- rlandscape(n = 500, hAsp = 2, pHole = 0.5)
+@
+
+You can access the helpfile for \code{rlandscape} by entering \code{?rlandscape} at the console.
+It describes all of the options available as well as the defaults.
+
+
+
+\section{Batch generation using \code{rland}}
+
+The \code{rland} function is used when, rather than specifying control parameters for the
+point processes used to generate landscapes, you want to specify the characteristics of the
+resulting landscape. It also makes it easy to generate and save any number of landscapes.
+
+The most workhorse arguments to \code{rland} are \code{targets} and \code{bounds}.
+The \code{targets} sets the range of landscape characteristics the algorithm will ``aim'' for, while
+\code{bounds} sets the range of landscape characteristics that will be accepted.
+The target ranges must fall inside the bounds ranges.
+See the \code{rland} help file (enter \code{?rland}) for information on defaults.
+
+\code{Rland} is designed to write its output to files rather than display it in R. 
+When you start an R session, there is a ``working directory'' to which, by default, R will save
+files (or look for files to load).
+You can see or change the current working directory with the commands
+\code{getwd} and \code{setwd}, or through file menus which depend on your operating system
+and interface.
+The working directory is where \code{rland} will write its output unless you specify a full filepath.
+The \code{filename} argument to \code{rland} is for the name of the run.
+For example, if you use \verb|filename = "land-sim"|
+and create 10 landscapes, they will be named
+and saved as \code{land-sim-01} to \code{land-sim-10} in the working directory.
+To have them saved somewhere else, you could set
+\verb|filename = "C:/otherDirectory/land-sim"|.
+The default filename is \code{"landscape"}.
+
+\subsection{Examples}
+So, if you wanted to generate 50 landscapes with between 200 and 300 polygons, 
+and save the plots of each landscape, this would do it:
+
+\begin{verbatim}
+    rland(targets = list(n = c(200, 300)),
+          bounds = list(n = c(200, 300)),
+          reps = 50,
+          filename = "run1",
+          savePlot = TRUE)
+\end{verbatim}
+
+A similar run with more specifications would look like this:
+\begin{verbatim}
+    rland(targets = list(n = c(200, 300),
+                         degMean = c(4.8, 5.2),
+                         areaCV = c(50, 70),
+                         hAsp = c(1, 5)),
+          bounds = list(n = c(175, 325),
+                        degMean = c(4.8, 5.2),
+                        areaCV = c(45, 75)),
+          reps = 50, filename = "run2", savePlot = TRUE)
+\end{verbatim}
+
+By default, the plots are not saved, but the adjacencies and areas are, as well as a summary
+table giving descriptive statistics about each of the landscapes. This can be viewed in R
+by
+
+\begin{verbatim}
+    run1.summary <- read.table("run1_summary.csv")
+    head(run1.summary)
+    hist(run1.summary$degMean) ## plotting a histogram of the degree means
+\end{verbatim}
+
+A assortment of 100 landscapes with random characteristics is created by
+\begin{verbatim}
+   rland(reps = 100, method = "random", filename = "random_landscape")
+\end{verbatim}
+
+\subsection{GUI}
+
+A graphical user interface (GUI) is available to interact with \code{rland}.
+All the arguments of \code{rland} can be accessed through the GUI.
+To start the GUI, simply enter \code{rland.gui()} in the R console.
+
+\end{document}
