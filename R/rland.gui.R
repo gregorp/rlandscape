@@ -40,23 +40,25 @@ rland.gui.wrapper <- function(n.target.min = 30, n.target.max = 200,
                              savePlot = FALSE, 
                              filename = "landscape", 
                              number_of_landscapes = 10) {
-    rland(targets = list(n = c(n.target.min, n.target.max), 
-                          degMean = c(degMean.target.min, degMean.target.max), 
-                          degSD = c(degSD.target.min, degSD.target.max), 
-                          areaCV = c(areaCV.target.min, areaCV.target.max), 
-                          hAsp = c(hAsp.min, hAsp.max)), 
-          bounds = list(n = c(n.bounds.min, n.bounds.max), 
-                        degMean = c(degMean.bounds.min, degMean.bounds.max), 
-                        degSD = c(degSD.bounds.min, degSD.bounds.max), 
-                        areaCV = c(areaCV.bounds.min, areaCV.bounds.max)), 
-           reps = number_of_landscapes, 
-           filename = filename, 
-           saveAdj = Save_adjacencies_areas_and_summary, 
-           saveAreas = Save_adjacencies_areas_and_summary, 
-           saveSummary = Save_adjacencies_areas_and_summary, 
-           savePlot = savePlot, 
-           saveLand = save_R_objects)
+    return()
 }
+#     rland(targets = list(n = c(n.target.min, n.target.max), 
+#                           degMean = c(degMean.target.min, degMean.target.max), 
+#                           degSD = c(degSD.target.min, degSD.target.max), 
+#                           areaCV = c(areaCV.target.min, areaCV.target.max), 
+#                           hAsp = c(hAsp.min, hAsp.max)), 
+#           bounds = list(n = c(n.bounds.min, n.bounds.max), 
+#                         degMean = c(degMean.bounds.min, degMean.bounds.max), 
+#                         degSD = c(degSD.bounds.min, degSD.bounds.max), 
+#                         areaCV = c(areaCV.bounds.min, areaCV.bounds.max)), 
+#            reps = number_of_landscapes, 
+#            filename = filename, 
+#            saveAdj = Save_adjacencies_areas_and_summary, 
+#            saveAreas = Save_adjacencies_areas_and_summary, 
+#            saveSummary = Save_adjacencies_areas_and_summary, 
+#            savePlot = savePlot, 
+#            saveLand = save_R_objects)
+#}
 
 #' Starts the GUI window for using rland.
 #' 
@@ -64,19 +66,21 @@ rland.gui.wrapper <- function(n.target.min = 30, n.target.max = 200,
 #' @export
 #' @return None.
 rland.gui <- function() {
-    if(!require(gWidgets, quietly = TRUE)) {
-        stop(paste0("To use the GUI the gWiddgets package must be installed.\n",
-                    "Try install.packages(\"gWidgets\")"))
+    return()
     }
-    if(!require(gWidgetsRGtk2, quietly = TRUE)) {
-        stop(paste0("To use the GUI the RGtk2 package must be installed.\n",
-             "Try install.packages(\"RGtk2\")"))
-    }
-    options("guiToolkit" = "RGtk2")
-    cat("Ignore the following message about variableType:\n    ")
-    rland.gui.list <- svalue(ggenericwidget("rland.gui.wrapper"))
-    rland.gui.list$variableType <- NULL
-    ggenericwidget(rland.gui.list, container = gwindow("Rland"))
-}
-
-
+#     if(!require(gWidgets, quietly = TRUE)) {
+#         stop(paste0("To use the GUI the gWiddgets package must be installed.\n",
+#                     "Try install.packages(\"gWidgets\")"))
+#     }
+#     if(!require(gWidgetsRGtk2, quietly = TRUE)) {
+#         stop(paste0("To use the GUI the RGtk2 package must be installed.\n",
+#              "Try install.packages(\"RGtk2\")"))
+#     }
+#     options("guiToolkit" = "RGtk2")
+#     cat("Ignore the following message about variableType:\n    ")
+#     rland.gui.list <- svalue(ggenericwidget("rland.gui.wrapper"))
+#     rland.gui.list$variableType <- NULL
+#     ggenericwidget(rland.gui.list, container = gwindow("Rland"))
+# }
+# 
+# 

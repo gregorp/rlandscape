@@ -18,8 +18,6 @@
 #' @docType package
 #' @aliases rlandscape-package
 #' @import deldir
-#' @suggests gWidgets
-#' @suggests gWidgetsRGtk2
 #' @importFrom spatstat rSSI
 #' @name rlandscape-package
 NULL
@@ -41,62 +39,6 @@ NULL
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
-
-
-## rlandscape 1.0
-## Gregor Passolt
-#  Quantitative Ecology and Resource Management (QERM)
-#  University of Washington
-#
-#  under supervision of Prof. Sandor F. Toth
-#  2011-2012
-#
-#################################################
-#  Based on a project
-#    by Mandi Fix and Gregor Passolt
-#    Quantitative Ecology and Resource Management
-#    University of Washington
-#
-#    fix@uw.edu, gregorp@uw.edu
-#
-#    June 2010
-#
-#    Functions that enable the creation of forests with randomized 
-#    stands and holes using a Voronoi tesselation approach with
-#    several options for generating seed points.
-#
-##################################################
-#  Modifications made
-#  # Jan 2010
-#    Cleaned code, standardized names
-#    increased readability
-#
-#    Added "lattice" method of point selection
-#
-#  # Summer 2011
-#    Implemented edge deletion, revised data structures (elimiated Spatstat's ppp class)
-#    Eliminated dependency on package "tripack"
-#    Enabled combinations of point patterns. Removed "grid" point pattern (lattice is better)
-#    Started work on GUI--incomplete
-#
-#  # Fall 2011
-#    Ran simulations, cleaned handling of control parameters, fixed aspect ratio problems
-#    Re-created hole creation to get more predictable number of tiles out
-#    Re-wrote clustering point process to reduce variability
-#    New plotting routine (based off of the one from package deldir)
-#    
-#  # Winter 2012
-#    fixed bugs in plotting with different aspect ratios, enable adjustable margins
-#    Wrote wrapper to hit targets (rland())
-#    Analyzed target-hitting ability
-#    made GUI for rland
-#    documented in roxygen style
-#
-#  # Summer 2012
-#    added GAM fitting routines
-#    turned into a package
-
-
 #' Creates a landscape object based on direct control parameters.
 #'
 #' This function takes parameters such as the number of tiles, the proportion of

@@ -1,5 +1,3 @@
-
-
 #' Plotting routine for landscape objects
 #' 
 #' A flexible plotting call for landscpe objects. The only required argument is
@@ -31,7 +29,6 @@
 #' @param mar vector of 4 values, margins for the plot.
 #' @param ... additional parameters passed to \code{segments} if for drawing the boundaries.
 #' @method plot landscape
-#' @S3method plot landscape
 #' @export
 #' @return \code{NULL}
 #' @seealso \link{par}
