@@ -1,9 +1,12 @@
-Version 2.0
+## Version 2.1
+
+Updated GUI to use Shiny.
+
+## Version 2.0
 
 Updated package structure and documentation to work with R >= 3.0
 
-
-New in Version 1.1
+## Version 1.1
 
 * Eliminated use of "subset" and "with" so passes package checks without notes.
 

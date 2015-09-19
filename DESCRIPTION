@@ -1,7 +1,7 @@
 Package: rlandscape
 Type: Package
 Title: Generates random landscapes with specifiable spatial characteristics
-Version: 2.0
+Version: 2.1
 Date: 2013-07-14
 Author: Gregor Thomas, Miranda J. Fix, Sandor F. Toth
 Maintainer: Gregor Thomas <gregor.passolt@gmail.com>
