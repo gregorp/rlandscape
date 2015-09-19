@@ -8,6 +8,7 @@
 #' You may need to increase effort (and wait a long time!) if the constraints
 #' are very narrow. About 0.5, 0.25, and 25 are the minimum ranges I'd recommend
 #' for degMean, degSD and areaCV, respectively.
+#' 
 #' As for the methods, "linear" uses the linear models as described in the paper
 #' (in review). The "random" option picks completely random
 #' parameters ignoring the targets. It opens the possibility of more pathological landscapes.
@@ -33,6 +34,11 @@
 #' 
 #' Use the \code{method = "random"} to ignore the targets and bounds and just pick
 #' control parameters randomly.
+#' 
+#' If \code{saveLand = TRUE} is used, each individual `landscape` object will be writtent to its own
+#' \code{.rds} file. These can be read into R using the \code{readRDS} function. Any other objects
+#' saved (adjacency lists, areas, summary statistics, plots) are saved in common file formats such
+#' as \code{.txt} or \code{.png}.
 #'
 #' @param targets a list with min and max targets for any or all of the landscape characteristics.
 #' Targetable characteristics are n, degMean, degSD, areaCV and hAsp.
@@ -232,7 +238,7 @@ rland <- function(targets = list(),
                           file = paste0(fullName[successes], "_areas.csv"),
                           row.names = FALSE)
             }
-            if (saveLand) save(thisLand, file = paste0(fullName[successes], ".Rdata"))
+            if (saveLand) saveRDS(thisLand, file = paste0(fullName[successes], ".rds"))
     }
     }
     ## Save the summary
