@@ -65,13 +65,14 @@ If not using a complete filepath set your working directly appropriately!
 You may need to increase effort (and wait a long time!) if the constraints
 are very narrow. About 0.5, 0.25, and 25 are the minimum ranges I'd recommend
 for degMean, degSD and areaCV, respectively.
+}
+\details{
 As for the methods, "linear" uses the linear models as described in the paper
 (in review). The "random" option picks completely random
 parameters ignoring the targets. It opens the possibility of more pathological landscapes.
 Generalized Additive Models might be available soon as a seperate download. Currently,
 the models I have for that are too big to put on CRAN.
-}
-\details{
+
 See the examples at the bottom! The defaults for targets are
 \code{
 list(n = c(30, 120),
@@ -91,6 +92,11 @@ because the targets are always hit exactly.
 
 Use the \code{method = "random"} to ignore the targets and bounds and just pick
 control parameters randomly.
+
+If \code{saveLand = TRUE} is used, each individual `landscape` object will be writtent to its own
+\code{.rds} file. These can be read into R using the \code{readRDS} function. Any other objects
+saved (adjacency lists, areas, summary statistics, plots) are saved in common file formats such
+as \code{.txt} or \code{.png}.
 }
 \examples{
 \dontrun{

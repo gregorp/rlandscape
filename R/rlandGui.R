@@ -1,6 +1,25 @@
 #' Shiny app for rland
 #' 
+#' Provides a GUI interface for creating landscapes. There are two tabs,
+#' "Single Run" and "Batch Mode".
+#' 
+#' The Single Run tab is essentially an interface to \link{rlandscape}. 
+#' It lets you explore parameters for creating a single landscape.
+#' 
+#' Batch Mode is an interface to \link{rland}, where you set targets
+#' and bounds for output landscape characteristics and generate
+#' many landscapes with characteristics within those bounds.
+#' 
+#' Both interfaces provided by the GUI are simplifications - they
+#' omit the detailed control parameters. To control those you will
+#' need to use \code{rlandscape} or \code{rland} directly.
+#' 
+#' @seealso \code{\link{rlandscape}} for a single landscape,
+#' \code{\link{rland}} for batches of landscapes.
+#' 
+#' @export
 #' @import shiny
+#' @import shinyBS
 rlandGui = function() {
     shinyApp(
         ui = navbarPage(
@@ -84,7 +103,7 @@ rlandGui = function() {
                                 h3("Other options"),
                              numericInput(inputId = "reps",
                                           label = "Number of landscapes:",
-                                          value = 25, min = 1, max = 1e5),
+                                          value = 2, min = 1, max = 1e5),
                              radioButtons(inputId = "method",
                                           label = "Parameter prediction type:",
                                           choices = c("linear", "random"),
@@ -92,33 +111,36 @@ rlandGui = function() {
                              h5("Save options:"),
                              checkboxInput(inputId = "saveAdj",
                                            label = "Adjacencies",
-                                           value = TRUE),
+                                           value = FALSE),
                              checkboxInput(inputId = "saveAreas",
                                            label = "Areas",
-                                           value = TRUE),
+                                           value = FALSE),
                              checkboxInput(inputId = "saveSummary",
                                            label = "Summary",
-                                           value = TRUE),
+                                           value = FALSE),
                              checkboxInput(inputId = "savePlot",
                                            label = "Plots",
-                                           value = TRUE),
+                                           value = FALSE),
                              checkboxInput(inputId = "saveLand",
                                            label = "R Object",
-                                           value = TRUE),
+                                           value = FALSE),
                              textInput(inputId = "savePath",
                                        label = "Path to save (including file name stem",
                                        value = paste(getwd(), "landscape", sep = "/")),
-                             actionButton(inputId = "doSim",
-                                          label = "Generate landscapes")
+                             bsButton(inputId = "doSim",
+                                      label = "Generate landscapes",
+                                      type = "action",
+                                      style = "default"),
+                             bsAlert("alert")
                          )
                      )
             )
         ),
-        server = shinyServer(function(input, output) {
+        server = shinyServer(function(input, output, session) {
             # landscape for single mode
             output$landPlot = renderPlot({
                 input$doPlot # for dependency of plot button
-                this_land = rlandscape::rlandscape(
+                this_land = rlandscape(
                     n = c(input$nUnif, input$nLattice, input$nClust, input$nSsi),
                     hAsp = input$hAsp,
                     pHole = input$pHole,
@@ -152,11 +174,42 @@ rlandGui = function() {
             observeEvent(
                 eventExpr = input$doSim,
                 handlerExpr = {
-                    #browser()
-                    do.call(what = rlandscape::rland,
-                            args = isolate(rlandCall()))
+ #                   browser()
+                    closeAlert(session, "alertComplete")
+                    sims = NA
+                    args = isolate(rlandCall())
+                    updateButton(session, 
+                                 inputId = "doSim",
+                                 style = "warning")
+                    sims = do.call(what = rland,
+                            args = args)
+                    updateButton(session, 
+                                 inputId = "doSim",
+                                 style = "default")
+                    if (any(is.na(sims))) {
+                        createAlert(session,
+                                    anchorId = "alert", 
+                                    alertId = "alertComplete",
+                                    style = "warning",
+                                    content = "Simulations didn't work :(\nCheck inputs.")
+                    } else if (sims["successes"] < args$reps) {
+                        createAlert(session,
+                                    anchorId = "alert",
+                                    alertId = "alertComplete",
+                                    style = "warning",
+                                    content = sprintf(
+                                        "After %d successes in %d attempts rland gave up. Try relaxing bounds.",
+                                        sims[1], sims[2]))
+                    } else {
+                        createAlert(session,
+                                anchorId = "alert",
+                                alertId = "alertComplete",
+                                style = "success",
+                                content = "Simulations Complete!")
+                   }
                 }
             )
         })
     )
 }
+    
