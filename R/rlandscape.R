@@ -122,6 +122,7 @@ rlandscape <- function(n = c(100, 0, 0, 0),
         edges$delete[delThese] <- 1
         
         ## Get rid of extraneous edges (if more than 2 cells are merged together)
+        browser()
         edges <- edgeClean(edges)
         
         ## Merge cells

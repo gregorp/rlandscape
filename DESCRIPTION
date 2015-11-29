@@ -5,7 +5,7 @@ Version: 2.1
 Date: 2013-07-14
 Author: Gregor Thomas, Miranda J. Fix, Sandor F. Toth
 Maintainer: Gregor Thomas <gregor.passolt@gmail.com>
-Imports:
+Imports: 
     spatstat,
     deldir
 Description: Rlandscape is a tool for generating data (forests divided into
@@ -14,3 +14,5 @@ Description: Rlandscape is a tool for generating data (forests divided into
     over some spatial properties of the data, such as the degree and area
     distributions.
 License: GPL (>= 2)
+Suggests: knitr
+VignetteBuilder: knitr
