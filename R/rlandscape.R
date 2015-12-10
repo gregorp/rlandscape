@@ -32,6 +32,7 @@
 #' @param control a list of control parameters passed to the \code{\link{makePoints}} function.
 #' @param filename a character string giving the prefix file name to be attached to saved output.
 #' Can include a file path. If \code{NULL} (the default) nothing will be saved.
+#' @param debug Run in debugging mode? (Uses browser().)
 #' @param ... Additional arguments will be passed to the plot call if appropriate. 
 #' @return A \code{landscape} object.
 #' @export
@@ -51,6 +52,7 @@ rlandscape <- function(n = c(100, 0, 0, 0),
                        plot = FALSE,
                        control = list(),
                        filename = NULL,
+                       debug = FALSE,
                        ... ) {
     ## additional parameter passed to plot.landscape, etc
     ## n = c(n uniform, n lattice, n cluster, n SSI)
@@ -122,7 +124,7 @@ rlandscape <- function(n = c(100, 0, 0, 0),
         edges$delete[delThese] <- 1
         
         ## Get rid of extraneous edges (if more than 2 cells are merged together)
-        browser()
+        if(debug) browser()
         edges <- edgeClean(edges)
         
         ## Merge cells
